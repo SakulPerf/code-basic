@@ -26,7 +26,13 @@ namespace CodeBasic
             }
             else
             {
-                PlayerBalance -= betAmount;
+                if (dealerPoints == playerPoints)
+                {
+                }
+                else
+                {
+                    PlayerBalance -= betAmount;
+                }
             }
         }
     }
