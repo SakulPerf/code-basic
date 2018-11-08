@@ -24,6 +24,10 @@ namespace CodeBasic
             {
                 PlayerBalance += betAmount;
             }
+            else
+            {
+                PlayerBalance -= betAmount;
+            }
         }
     }
 }
