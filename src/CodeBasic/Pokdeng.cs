@@ -11,12 +11,15 @@ namespace CodeBasic
         // Club, Diamond, Heart, Spade (case sensitive)
         public void CheckGameResult(
             int betAmount,
-            int p1CardNo1, int p1CardNo2, int p1CardNo3, 
+            int p1CardNo1, int p1CardNo2, int p1CardNo3,
             string p1CardSymbol1, string p1CardSymbol2, string p1CardSymbol3,
             int p2CardNo1, int p2CardNo2, int p2CardNo3,
             string p2CardSymbol1, string p2CardSymbol2, string p2CardSymbol3)
         {
-            throw new NotImplementedException();
+            if (p2CardNo1 + p2CardNo2 + p2CardNo3 > p1CardNo1 + p1CardNo2 + p1CardNo3)
+            {
+                PlayerBalance += betAmount;
+            }
         }
     }
 }
