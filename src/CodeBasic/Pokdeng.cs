@@ -19,20 +19,17 @@ namespace CodeBasic
             var dealerPoints = p1CardNo1 + p1CardNo2 + p1CardNo3;
             var playerPoints = p2CardNo1 + p2CardNo2 + p2CardNo3;
 
-            bool isPlayerTheWinner = playerPoints > dealerPoints;
+            var isGameDraw = dealerPoints == playerPoints;
+            if (isGameDraw) return;
+
+            var isPlayerTheWinner = playerPoints > dealerPoints;
             if (isPlayerTheWinner)
             {
                 PlayerBalance += betAmount;
             }
             else
             {
-                if (dealerPoints == playerPoints)
-                {
-                }
-                else
-                {
-                    PlayerBalance -= betAmount;
-                }
+                PlayerBalance -= betAmount;
             }
         }
     }
