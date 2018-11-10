@@ -44,6 +44,7 @@ namespace CodeBasic
 
         public int CompareTo(Deck other)
         {
+            // TODO: Need to refactors
             if(IsPok && other.IsPok)
             {
                 var isDraw = Score == other.Score || (IsGainTriple && other.IsGainTriple);
