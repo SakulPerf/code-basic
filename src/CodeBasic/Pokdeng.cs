@@ -16,7 +16,8 @@ namespace CodeBasic
             int p2CardNo1, int p2CardNo2, int p2CardNo3,
             string p2CardSymbol1, string p2CardSymbol2, string p2CardSymbol3)
         {
-            if (betAmount > PlayerBalance)
+            var isBetAmountValid = betAmount <= PlayerBalance;
+            if (!isBetAmountValid)
             {
                 return;
             }
@@ -30,11 +31,17 @@ namespace CodeBasic
             var isPlayerTheWinner = playerPoints > dealerPoints;
             if (isPlayerTheWinner)
             {
-                PlayerBalance += betAmount;
+                var areCardsSame = p2CardNo1 == p2CardNo2;
+                var areSymbolesSame = p2CardSymbol1 == p2CardSymbol2;
+                var isDouble = areCardsSame || areSymbolesSame;
+                PlayerBalance += isDouble ? betAmount * 2 : betAmount;
             }
             else
             {
-                PlayerBalance -= betAmount;
+                var areCardsSame = p1CardNo1 == p1CardNo2;
+                var areSymbolesSame = p1CardSymbol1 == p1CardSymbol2;
+                var isDouble = areCardsSame || areSymbolesSame;
+                PlayerBalance -= isDouble ? betAmount * 2 : betAmount;
             }
         }
     }
