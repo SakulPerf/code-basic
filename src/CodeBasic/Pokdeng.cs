@@ -22,27 +22,33 @@ namespace CodeBasic
                 return;
             }
 
-            var dealerPoints = p1CardNo1 + p1CardNo2 + p1CardNo3;
-            var playerPoints = p2CardNo1 + p2CardNo2 + p2CardNo3;
+            var dealerDeck = createDeck(p1CardNo1, p1CardSymbol1, p1CardNo2, p1CardSymbol2, p1CardNo3, p1CardSymbol3);
+            var playerDeck = createDeck(p2CardNo1, p2CardSymbol1, p2CardNo2, p2CardSymbol2, p2CardNo3, p2CardSymbol3);
+            var comparedResult = playerDeck.CompareTo(dealerDeck);
 
-            var isGameDraw = dealerPoints == playerPoints;
-            if (isGameDraw) return;
-
-            var isPlayerTheWinner = playerPoints > dealerPoints;
-            if (isPlayerTheWinner)
+            const int Draw = 0;
+            const int PlayerWin = 1;
+            const int DealerWin = -1;
+            switch (comparedResult)
             {
-                var areCardsSame = p2CardNo1 == p2CardNo2;
-                var areSymbolesSame = p2CardSymbol1 == p2CardSymbol2;
-                var isDouble = areCardsSame || areSymbolesSame;
-                PlayerBalance += isDouble ? betAmount * 2 : betAmount;
-            }
-            else
-            {
-                var areCardsSame = p1CardNo1 == p1CardNo2;
-                var areSymbolesSame = p1CardSymbol1 == p1CardSymbol2;
-                var isDouble = areCardsSame || areSymbolesSame;
-                PlayerBalance -= isDouble ? betAmount * 2 : betAmount;
+                case PlayerWin:
+                    PlayerBalance += playerDeck.IsGainDouble ? betAmount * 2 : betAmount;
+                    break;
+                case DealerWin:
+                    PlayerBalance -= dealerDeck.IsGainDouble ? betAmount * 2 : betAmount;
+                    break;
+                case Draw:
+                default:
+                    break;
             }
         }
+
+        private Deck createDeck(int card1, string symbol1, int card2, string symbol2, int card3, string symbol3)
+            => new Deck(new List<Card>
+            {
+                new Card(card1, symbol1),
+                new Card(card2, symbol2),
+                new Card(card3, symbol3),
+            });
     }
 }
