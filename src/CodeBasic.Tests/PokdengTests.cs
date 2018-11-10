@@ -182,6 +182,32 @@ namespace CodeBasic.Tests
             sut.CheckGameResult(bet, p1cn1, p1cn2, p1cn3, p1cs1, p1cs2, p1cs3, p2cn1, p2cn2, p2cn3, p2cs1, p2cs2, p2cs3);
             Assert.Equal(expectedBalance, sut.PlayerBalance);
         }
+        
+        [Theory(DisplayName = "แต้มผู้เล่นชนะเจ้ามือโดยเป็นไพ่ป๊อก ผู้เล่นได้รับเงินเพิ่มเท่ากับเงินที่ลงพนัน")]
+        [InlineData(100, 1, 1, 2, Club, Diamon, Diamon, 1, 8, 0, Club, Diamon, "", 1000, 1100)]
+        [InlineData(100, 1, 7, 1, Club, Diamon, Diamon, 1, 8, 0, Club, Diamon, "", 1000, 1100)]
+        [InlineData(100, 1, 1, 2, Club, Diamon, Diamon, 1, 7, 0, Club, Diamon, "", 1000, 1100)]
+        [InlineData(100, 1, 7, 1, Club, Diamon, Diamon, 1, 7, 0, Club, Diamon, "", 1000, 1100)]
+        public void PlayerWinPokWhenFaceTo3CardsThenGainX1FromBet(int bet, int p1cn1, int p1cn2, int p1cn3, string p1cs1, string p1cs2, string p1cs3, int p2cn1, int p2cn2, int p2cn3, string p2cs1, string p2cs2, string p2cs3, int balance, int expectedBalance)
+        {
+            var sut = new Pokdeng { PlayerBalance = balance };
+            sut.PlayerBalance = balance;
+            sut.CheckGameResult(bet, p1cn1, p1cn2, p1cn3, p1cs1, p1cs2, p1cs3, p2cn1, p2cn2, p2cn3, p2cs1, p2cs2, p2cs3);
+            Assert.Equal(expectedBalance, sut.PlayerBalance);
+        }
+
+        [Theory(DisplayName = "แต้มผู้เล่นแพ้เจ้ามือโดยเป็นไพ่ป๊อก ผู้เล่นเสียเท่ากับเงินที่ลงพนัน")]
+        [InlineData(100, 1, 8, 0, Club, Diamon, "", 1, 1, 2, Club, Diamon, Diamon, 1000, 900)]
+        [InlineData(100, 1, 8, 0, Club, Diamon, "", 1, 7, 1, Club, Diamon, Diamon, 1000, 900)]
+        [InlineData(100, 1, 7, 0, Club, Diamon, "", 1, 1, 2, Club, Diamon, Diamon, 1000, 900)]
+        [InlineData(100, 1, 7, 0, Club, Diamon, "", 1, 7, 1, Club, Diamon, Diamon, 1000, 900)]
+        public void PlayerlostPokWhenFaceTo3CardsThenLostX1FromBet(int bet, int p1cn1, int p1cn2, int p1cn3, string p1cs1, string p1cs2, string p1cs3, int p2cn1, int p2cn2, int p2cn3, string p2cs1, string p2cs2, string p2cs3, int balance, int expectedBalance)
+        {
+            var sut = new Pokdeng { PlayerBalance = balance };
+            sut.PlayerBalance = balance;
+            sut.CheckGameResult(bet, p1cn1, p1cn2, p1cn3, p1cs1, p1cs2, p1cs3, p2cn1, p2cn2, p2cn3, p2cs1, p2cs2, p2cs3);
+            Assert.Equal(expectedBalance, sut.PlayerBalance);
+        }
 
         /*
          * 

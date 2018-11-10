@@ -18,6 +18,18 @@ namespace CodeBasic
         public bool IsGainTriple => AllSymbolsAreSame && Cards.Count() == TripleCards;
         private bool AllCardsAreSame => Cards.Select(it => it.No).Distinct().Count() == SingleElement;
         private bool AllSymbolsAreSame => Cards.Select(it => it.Symbol.ToLower()).Distinct().Count() == SingleElement;
+        public bool IsPok
+        {
+            get
+            {
+                const int Pok9 = 9;
+                const int Pok8 = 8;
+                var pocks = new[] { Pok9, Pok8 };
+                const int DoubleCards = 2;
+                var isNoRequestMoreCards = Cards.Count() == DoubleCards;
+                return pocks.Contains(Score) && isNoRequestMoreCards;
+            }
+        }
 
         public Deck(IEnumerable<Card> cards)
         {
@@ -32,17 +44,37 @@ namespace CodeBasic
 
         public int CompareTo(Deck other)
         {
-            if (Score == other.Score || (IsGainTriple && other.IsGainTriple))
+            if(IsPok && other.IsPok)
             {
-                return 0;
+                var isDraw = Score == other.Score || (IsGainTriple && other.IsGainTriple);
+                if (isDraw)
+                {
+                    return 0;
+                }
+                else
+                {
+                    var win = Score > other.Score;
+                    return win ? 1 : -1;
+                }
             }
-            else if (Score > other.Score)
+            else if (IsPok)
             {
                 return 1;
             }
-            else
+            else if (other.IsPok)
             {
                 return -1;
+            }
+
+            var draw = Score == other.Score || (IsGainTriple && other.IsGainTriple);
+            if (draw)
+            {
+                return 0;
+            }
+            else
+            {
+                var win = Score > other.Score;
+                return win ? 1 : -1;
             }
         }
     }

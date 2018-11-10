@@ -32,10 +32,10 @@ namespace CodeBasic
             switch (comparedResult)
             {
                 case PlayerWin:
-                    PlayerBalance += playerDeck.IsGainTriple ? betAmount * 3 : playerDeck.IsGainDouble ? betAmount * 2 : betAmount;
+                    PlayerBalance += calculateAmountToUpdateBalance(playerDeck, betAmount);
                     break;
                 case DealerWin:
-                    PlayerBalance -= dealerDeck.IsGainTriple ? betAmount * 3 : dealerDeck.IsGainDouble ? betAmount * 2 : betAmount;
+                    PlayerBalance -= calculateAmountToUpdateBalance(dealerDeck, betAmount);
                     break;
                 case Draw:
                 default:
@@ -50,5 +50,22 @@ namespace CodeBasic
                 new Card(card2, symbol2),
                 new Card(card3, symbol3),
             });
+
+        private int calculateAmountToUpdateBalance(Deck deck, int betAmount)
+        {
+            var multiplier = 1;
+            if (deck.IsGainTriple)
+            {
+                const int Triple = 3;
+                multiplier = Triple;
+            }
+            else if (deck.IsGainDouble)
+            {
+                const int Double = 2;
+                multiplier = Double;
+            }
+
+            return betAmount * multiplier;
+        }
     }
 }
