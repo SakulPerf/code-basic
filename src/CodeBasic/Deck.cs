@@ -9,12 +9,13 @@ namespace CodeBasic
     {
         private const int ScoreBreakingPoint = 10;
         private const int SingleElement = 1;
+        private const int TripleCards = 3;
 
         public IEnumerable<Card> Cards { get; private set; }
 
         public int Score => Cards.Sum(it => it.No) % ScoreBreakingPoint;
         public bool IsGainDouble => AllCardsAreSame || AllSymbolsAreSame;
-
+        public bool IsGainTriple => AllSymbolsAreSame && Cards.Count() == TripleCards;
         private bool AllCardsAreSame => Cards.Select(it => it.No).Distinct().Count() == SingleElement;
         private bool AllSymbolsAreSame => Cards.Select(it => it.Symbol.ToLower()).Distinct().Count() == SingleElement;
 
@@ -31,13 +32,13 @@ namespace CodeBasic
 
         public int CompareTo(Deck other)
         {
-            if (Score > other.Score)
-            {
-                return 1;
-            }
-            else if (Score == other.Score)
+            if (Score == other.Score || (IsGainTriple && other.IsGainTriple))
             {
                 return 0;
+            }
+            else if (Score > other.Score)
+            {
+                return 1;
             }
             else
             {

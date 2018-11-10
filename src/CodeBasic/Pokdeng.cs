@@ -32,10 +32,10 @@ namespace CodeBasic
             switch (comparedResult)
             {
                 case PlayerWin:
-                    PlayerBalance += playerDeck.IsGainDouble ? betAmount * 2 : betAmount;
+                    PlayerBalance += playerDeck.IsGainTriple ? betAmount * 3 : playerDeck.IsGainDouble ? betAmount * 2 : betAmount;
                     break;
                 case DealerWin:
-                    PlayerBalance -= dealerDeck.IsGainDouble ? betAmount * 2 : betAmount;
+                    PlayerBalance -= dealerDeck.IsGainTriple ? betAmount * 3 : dealerDeck.IsGainDouble ? betAmount * 2 : betAmount;
                     break;
                 case Draw:
                 default:
