@@ -164,7 +164,7 @@ namespace CodeBasic.Tests
             Assert.Equal(expectedBalance, sut.PlayerBalance);
         }
 
-        [Theory(DisplayName = "แต้มผู้เล่นชนะเจ้ามือ แบบสามเด้ง ผู้เล่นได้รับเงินเพิ่ม 3 เท่าของเงินที่ลงพนัน")]
+        [Theory(DisplayName = "แต้มผู้เล่นแพ้เจ้ามือ แบบสามเด้ง ผู้เล่นเสียเงินเพิ่ม 3 เท่าของเงินที่ลงพนัน")]
         [InlineData(100, 2, 2, 1, Club, Club, Club, 1, 1, 1, Club, Diamon, Club, 1000, 700)]
         public void PlayerLoseTripleThenLoseX1FromBet(int bet, int p1cn1, int p1cn2, int p1cn3, string p1cs1, string p1cs2, string p1cs3, int p2cn1, int p2cn2, int p2cn3, string p2cs1, string p2cs2, string p2cs3, int balance, int expectedBalance)
         {
@@ -185,7 +185,7 @@ namespace CodeBasic.Tests
             Assert.Equal(expectedBalance, sut.PlayerBalance);
         }
 
-        [Theory(DisplayName = "แต้มผู้เล่นชนะเจ้ามือโดยเป็นไพ่ป๊อก ผู้เล่นได้รับเงินเพิ่มเท่ากับเงินที่ลงพนัน")]
+        [Theory(DisplayName = "แต้มผู้เล่นชนะเจ้ามือโดยเป็นไพ่ป๊อก ผู้เล่นได้รับเงินเพิ่มเท่ากับเงินที่ลงพนันน")]
         [InlineData(100, 1, 1, 2, Club, Diamon, Diamon, 1, 8, 0, Club, Diamon, "", 1000, 1100)]
         [InlineData(100, 1, 7, 1, Club, Diamon, Diamon, 1, 8, 0, Club, Diamon, "", 1000, 1100)]
         [InlineData(100, 1, 1, 2, Club, Diamon, Diamon, 1, 7, 0, Club, Diamon, "", 1000, 1100)]

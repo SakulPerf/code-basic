@@ -22,9 +22,9 @@ namespace CodeBasic
             var dealerSumScore = SumScore(dealerCardsonHand);
             var playerSumScore = SumScore(playerCardsonHand);
 
-            var TotalCardsOndealer = CheckTotalCardsonHands(dealerCardsonHand);
-            var TotalCardsOnplayer = CheckTotalCardsonHands(playerCardsonHand);
-            CheckPlayerWin(betAmount, playerCardsonHand, dealerCardsonHand, dealerSumScore, playerSumScore, TotalCardsOndealer, TotalCardsOnplayer);
+
+
+            CheckPlayerWin(betAmount, playerCardsonHand, dealerCardsonHand, dealerSumScore, playerSumScore);
         }
 
         public static int SumScore(CardsOnHand cardsOnHand)
@@ -33,9 +33,9 @@ namespace CodeBasic
             return sumScore.Score = cardsOnHand.NumberCards.Where(numberCards => numberCards <= 9).Sum() % 10;
         }
 
+
         public static ScoreRankCards CheckCardsScore(CardsOnHand cardsOnHand)
         {
-            var sumScore = new SumScore();
             var score = SumScore(cardsOnHand);
             var StraightNumberCards = OrderbyNumberCard(cardsOnHand);
             if (cardsOnHand.NumberCards[2] == 0)
@@ -102,7 +102,9 @@ namespace CodeBasic
                 case ScoreRankCards.Pok2deng:
                     return 2;
                 case ScoreRankCards.Ghost:
+                    return 3;
                 case ScoreRankCards.Straight:
+                    return 3;
                 case ScoreRankCards.ThreePair:
                     return 3;
                 case ScoreRankCards.Tong:
@@ -112,17 +114,14 @@ namespace CodeBasic
             }
         }
 
-        public void CheckPlayerWin(int betAmount, CardsOnHand playerCardsonHand, CardsOnHand dealerCardsonHand, int dealerSumScore, int playerSumScore, int TotalCardsOndealer, int TotalCardsOnplayer)
+        public void CheckPlayerWin(int betAmount, CardsOnHand playerCardsonHand, CardsOnHand dealerCardsonHand, int dealerSumScore, int playerSumScore)
         {
-            var isGameDraw = dealerSumScore == playerSumScore;
-            var isPlayerTheWinner = playerSumScore > dealerSumScore;
+            var TotalCardsOnplayer = playerCardsonHand.NumberCards.Count(it => it != 0);
+            var TotalCardsOndealer = dealerCardsonHand.NumberCards.Count(it => it != 0);
+
             if (betAmount > 0)
             {
-                if (isPlayerTheWinner)
-                {
-                    PlayerBalance += betAmount * CheckRankCardsReward(playerCardsonHand);
-                }
-                else if (dealerSumScore == playerSumScore)
+                if (dealerSumScore == playerSumScore)
                 {
                     if (TotalCardsOnplayer < TotalCardsOndealer)
                     {
@@ -132,23 +131,37 @@ namespace CodeBasic
                     {
                         PlayerBalance -= betAmount;
                     }
-                    else return;
-
+                }
+                else if (playerSumScore > dealerSumScore)
+                {
+                    PlayerBalance += betAmount * CheckRankCardsReward(playerCardsonHand);
                 }
                 else
                 {
-                    PlayerBalance -= betAmount * CheckRankCardsReward(dealerCardsonHand);
+                    if (TotalCardsOnplayer < TotalCardsOndealer && playerSumScore >= 8)
+                    {
+                        PlayerBalance += betAmount;
+                    }
+                    else
+                    {
+                        PlayerBalance -= betAmount * CheckRankCardsReward(dealerCardsonHand);
+                    }
+
                 }
             }
+            else if (betAmount > PlayerBalance) return;
+
             else return;
-
         }
 
-        public static int CheckTotalCardsonHands(CardsOnHand CardsonHand)
-        {
-            return CardsonHand.SymbolCards.Count(it => it != "");
-        }
+        // public static int CheckTotalCardsonHands(CardsOnHand CardsonHand)
+        // {
+        //     var totalcard = new SumCard();
+        //     return totalcard.TotalCards = CardsonHand.NumberCards.Count(it => it != 0);
+        // }
     }
+
+
 }
 
 
