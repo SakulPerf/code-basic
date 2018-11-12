@@ -5,43 +5,50 @@ namespace CodeBasic.Tests
 {
     public class PokdengTests
     {
+        // Club, Diamond, Heart, Spade (case sensitive)
         private const string Club = "Club";
+        private const string Diamond = "Diamond";
+        private const string Heart = "Heart";
+        private const string Spade = "Spade";
 
         [Theory(DisplayName = "แต้มผู้เล่นชนะเจ้ามือ ผู้เล่นได้รับเงินเพิ่มเท่ากับเงินที่ลงพนัน")]
-        [InlineData(100, 1, 1, Club, Club, 1, 2, Club, Club, 1000, 1100)]
-        [InlineData(100, 1, 1, Club, Club, 1, 3, Club, Club, 1000, 1100)]
-        [InlineData(100, 1, 1, Club, Club, 1, 4, Club, Club, 1000, 1100)]
+        [InlineData(100, 1, 2, Club, Club, 4, 2, Club, Club, 1000, 1200)]
+        [InlineData(100, 1, 3, Club, Club, 4, 5, Heart, Club, 1000, 1100)]
+        [InlineData(100, 1, 2, Spade, Club, 5, 4, Diamond, Diamond, 1000, 1200)]
         public void PlayerWinThenGainX1FromBet(int bet, int p1cn1, int p1cn2, string p1cs1, string p1cs2, int p2cn1, int p2cn2, string p2cs1, string p2cs2, int balance, int expectedBalance)
         {
-            var sut = new Pokdeng { PlayerBalance = balance };
+            // sut.PlayerBalance = balance;
+            // var sut = new Pokdeng { PlayerBalance = balance };
+            var sut = new Pokdeng();
             sut.PlayerBalance = balance;
             sut.CheckGameResult(bet, p1cn1, p1cn2, 0, p1cs1, p1cs2, string.Empty, p2cn1, p2cn2, 0, p2cs1, p2cs2, string.Empty);
-            Assert.Equal(expectedBalance, sut.PlayerBalance);
+            Assert.Equal(expectedBalance,sut.PlayerBalance);
+
         }
 
-        [Theory(DisplayName = "แต้มผู้เล่นแพ้เจ้ามือ ผู้เล่นเสียเงินเท่ากับเงินที่ลงพนัน")]
-        [InlineData(100, 1, 2, Club, Club, 1, 1, Club, Club, 1000, 900)]
-        [InlineData(100, 1, 3, Club, Club, 1, 1, Club, Club, 1000, 900)]
-        [InlineData(100, 1, 4, Club, Club, 1, 1, Club, Club, 1000, 900)]
-        public void PlayerLoseThenLoseX1FromBet(int bet, int p1cn1, int p1cn2, string p1cs1, string p1cs2, int p2cn1, int p2cn2, string p2cs1, string p2cs2, int balance, int expectedBalance)
-        {
-            var sut = new Pokdeng { PlayerBalance = balance };
-            sut.PlayerBalance = balance;
-            sut.CheckGameResult(bet, p1cn1, p1cn2, 0, p1cs1, p1cs2, string.Empty, p2cn1, p2cn2, 0, p2cs1, p2cs2, string.Empty);
-            Assert.Equal(expectedBalance, sut.PlayerBalance);
-        }
+        // [Theory(DisplayName = "แต้มผู้เล่นแพ้เจ้ามือ ผู้เล่นเสียเงินเท่ากับเงินที่ลงพนัน")]
+        // [InlineData(100, 1, 2, Club, Club, 1, 1, Club, Club, 1000, 900)]
+        // [InlineData(100, 1, 3, Club, Club, 1, 1, Club, Club, 1000, 900)]
+        // [InlineData(100, 1, 4, Club, Club, 1, 1, Club, Club, 1000, 900)]
+        // public void PlayerLoseThenLoseX1FromBet(int bet, int p1cn1, int p1cn2, string p1cs1, string p1cs2, int p2cn1, int p2cn2, string p2cs1, string p2cs2, int balance, int expectedBalance)
+        // {
+        //     var sut = new Pokdeng { PlayerBalance = balance };
+        //     sut.PlayerBalance = balance;
+        //     sut.CheckGameResult(bet, p1cn1, p1cn2, 0, p1cs1, p1cs2, string.Empty, p2cn1, p2cn2, 0, p2cs1, p2cs2, string.Empty);
+        //     Assert.Equal(expectedBalance, sut.PlayerBalance);
+        // }
 
-        [Theory(DisplayName = "แต้มผู้เล่นเสมอกับเจ้ามือ ผู้เล่นไม่เสียเงิน")]
-        [InlineData(100, 1, 2, Club, Club, 1, 2, Club, Club, 1000, 1000)]
-        [InlineData(100, 1, 3, Club, Club, 1, 3, Club, Club, 1000, 1000)]
-        [InlineData(100, 1, 4, Club, Club, 1, 4, Club, Club, 1000, 1000)]
-        public void PlayerDrawThenDoNothing(int bet, int p1cn1, int p1cn2, string p1cs1, string p1cs2, int p2cn1, int p2cn2, string p2cs1, string p2cs2, int balance, int expectedBalance)
-        {
-            var sut = new Pokdeng { PlayerBalance = balance };
-            sut.PlayerBalance = balance;
-            sut.CheckGameResult(bet, p1cn1, p1cn2, 0, p1cs1, p1cs2, string.Empty, p2cn1, p2cn2, 0, p2cs1, p2cs2, string.Empty);
-            Assert.Equal(expectedBalance, sut.PlayerBalance);
-        }
+        // [Theory(DisplayName = "แต้มผู้เล่นเสมอกับเจ้ามือ ผู้เล่นไม่เสียเงิน")]
+        // [InlineData(100, 1, 2, Club, Club, 1, 2, Club, Club, 1000, 1000)]
+        // [InlineData(100, 1, 3, Club, Club, 1, 3, Club, Club, 1000, 1000)]
+        // [InlineData(100, 1, 4, Club, Club, 1, 4, Club, Club, 1000, 1000)]
+        // public void PlayerDrawThenDoNothing(int bet, int p1cn1, int p1cn2, string p1cs1, string p1cs2, int p2cn1, int p2cn2, string p2cs1, string p2cs2, int balance, int expectedBalance)
+        // {
+        //     var sut = new Pokdeng { PlayerBalance = balance };
+        //     sut.PlayerBalance = balance;
+        //     sut.CheckGameResult(bet, p1cn1, p1cn2, 0, p1cs1, p1cs2, string.Empty, p2cn1, p2cn2, 0, p2cs1, p2cs2, string.Empty);
+        //     Assert.Equal(expectedBalance, sut.PlayerBalance);
+        // }
 
         /*
          * Normal cases

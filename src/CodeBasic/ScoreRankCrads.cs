@@ -2,18 +2,20 @@ namespace CodeBasic
 {
     public enum ScoreRankCards
     {
-        // ป๊อก 9 
-        Poknine = 9,
+        // ป๊อก 9 8
+        Pok = 9,
+        // ป๊อก 9 2 เด้ง
+        Pok2deng = 8,
         // ตอง 
-        Tong = 8,
+        Tong = 7,
         // ผี 
-        Ghost = 7,
+        Ghost = 6,
         // เรียง
-        Straight = 6,
+        Straight = 5,
         // สองเด้ง
-        TwoPair = 5,
+        TwoPair = 4,
         // สามเด้ง
-        ThreePair = 4,
+        ThreePair = 3,
         // ไพ่ธรรมดา่
         NormalCard = 0
     }
@@ -23,8 +25,4 @@ namespace CodeBasic
         public int Score { get; set; }
     }
 
-    public class Cards
-    {
-        public int RankCards {get;set;}
-    }
 }

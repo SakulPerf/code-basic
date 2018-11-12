@@ -19,91 +19,103 @@ namespace CodeBasic
             var dealerCardsonHand = new CardsOnHand();
             var playerCardsonHand = new CardsOnHand();
 
-            dealerCardsonHand.NumberCards = new int[] { p1CardSymbol1, p1CardSymbol2, p1CardSymbol3 };
-            playerCardsonHand.NumberCards = new int[] { p2CardSymbol1, p2CardSymbol2, p2CardSymbol3 };
-            dealerCardsonHand.SymbolCards = new int[] { p1CardSymbol1, p1CardSymbol2, p1CardSymbol3 };
-            playerCardsonHand.SymbolCards = new int[] { p2CardSymbol1, p2CardSymbol2, p2CardSymbol3 };
+            dealerCardsonHand.NumberCards = new int[] { p1CardNo1, p1CardNo2, p1CardNo3 };
+            playerCardsonHand.NumberCards = new int[] { p2CardNo1, p2CardNo2, p2CardNo3 };
+            dealerCardsonHand.SymbolCards = new string[] { p1CardSymbol1, p1CardSymbol2, p1CardSymbol3 };
+            playerCardsonHand.SymbolCards = new string[] { p2CardSymbol1, p2CardSymbol2, p2CardSymbol3 };
 
-            dealerCardsonHand.NumberCards = CheckCardsScore(dealerCardsonHand);
-            playerCardsonHand.NumberCards = CheckCardsScore(playerCardsonHand);
+            var dealerSumScore = SumScore(dealerCardsonHand);
+            var playerSumScore = SumScore(playerCardsonHand);
 
+            var isGameDraw = dealerSumScore == playerSumScore;
+            if (isGameDraw) return;
 
-            if (dealerCardsonHand.NumberCards > playerCardsonHand.NumberCards)
+            var isPlayerTheWinner = playerSumScore > dealerSumScore;
+
+            if (isPlayerTheWinner)
             {
-                CheckRankCards();
+                PlayerBalance += betAmount * CheckRankCardsReward(playerCardsonHand);
             }
-            // var isGameDraw = dealerPoints == playerPoints;
-            // if (isGameDraw) return;
-
-            // var isPlayerTheWinner = playerPoints > dealerPoints;
-            // if (isPlayerTheWinner)
-            // {
-            //     PlayerBalance += betAmount;
-            // }
-            // else
-            // {
-            //     PlayerBalance -= betAmount;
-            // }
-
-        }
-
-        private static void CheckRankCards(int PlayerWin)
-        {
-
-            switch (PlayerWin)
+            else
             {
-
-                default:
+                PlayerBalance -= betAmount * CheckRankCardsReward(playerCardsonHand);
             }
         }
-
-        private static void CheckCardsScore(CardsOnHand cardsOnHand)
+        private static int SumScore(CardsOnHand cardsOnHand)
         {
             var sumScore = new SumScore();
-            var card = new Cards();
-            sumScore.Score = cardsOnHand.NumberCards.Where(numberCards => numberCards <= 9).Sum() % 10;
+            return sumScore.Score = cardsOnHand.NumberCards.Where(numberCards => numberCards < 10).Sum() % 10;
+        }
+
+        private static int CheckRankCardsReward(CardsOnHand PlayerCardScore)
+        {
+            ScoreRankCards rankCards = CheckCardsScore(PlayerCardScore);
+            switch (rankCards)
+            {
+                case ScoreRankCards.TwoPair:
+                case ScoreRankCards.Pok2deng:
+                    return 2;
+                case ScoreRankCards.Ghost:
+                case ScoreRankCards.Straight:
+                case ScoreRankCards.ThreePair:
+                    return 3;
+                case ScoreRankCards.Tong:
+                    return 5;
+                default:
+                    return 1;
+            }
+        }
+
+        private static ScoreRankCards CheckCardsScore(CardsOnHand cardsOnHand)
+        {
+            var sumScore = new SumScore();
+            var score = SumScore(cardsOnHand);
             var StraightNumberCards = cardsOnHand.NumberCards.OrderBy(numberCards => numberCards).ToList();
             if (cardsOnHand.NumberCards[2] == 0)
             {
+                if (score >= 8)
+                {
+                    if (cardsOnHand.SymbolCards[0] == cardsOnHand.SymbolCards[1] || cardsOnHand.NumberCards[0] == cardsOnHand.NumberCards[1])
+                    {
+                        return ScoreRankCards.Pok2deng;
+                    }
+                    else
+                    {
+                        return ScoreRankCards.Pok;
+                    }
+                }
                 // สองเด้ง - ไพ่ในมือมี 2 ใบและเป็น ดอกเดียวกัน หรือ ตัวเลขเดียวกัน ถ้าชนะจะได้เงิน 2 เท่า
                 if (cardsOnHand.SymbolCards[0] == cardsOnHand.SymbolCards[1] || cardsOnHand.NumberCards[0] == cardsOnHand.NumberCards[1])
                 {
-                    card.RankCards = 5;
+                    return ScoreRankCards.TwoPair;
                 }
-                else if (sumScore.Score >= 9)
-                {
-                    card.RankCards = 9;
-                }
-                else
-                {
-                    card.RankCards = 0;
-                }
+
             }
             else
             {
                 // สามเด้ง - ไพ่ในมือมี 3 ใบและเป็น ดอกเดียวกัน ถ้าชนะจะได้เงิน 3 เท่า
-                if (cardsOnHand.SymbolCards[0] == cardsOnHand.SymbolCards[1] == cardsOnHand.SymbolCards[2])
+                if (cardsOnHand.SymbolCards[0] == cardsOnHand.SymbolCards[1] && cardsOnHand.SymbolCards[1] == cardsOnHand.SymbolCards[2])
                 {
-                    card.RankCards = 4;
+                    return ScoreRankCards.ThreePair;
                 }
                 // ตอง - ไพ่ในมือมี 3 ใบและเป็น เลขเดียวกัน ถ้าชนะจะได้เงิน 5 เท่า
-                else if (cardsOnHand.NumberCards[0] == cardsOnHand.NumberCards[1] == cardsOnHand.NumberCards[2])
+                else if (cardsOnHand.NumberCards[0] == cardsOnHand.NumberCards[1] && cardsOnHand.NumberCards[1] == cardsOnHand.NumberCards[2])
                 {
-                    card.RankCards = 8;
+                    return ScoreRankCards.Tong;
                 }
-                // ผี - ไพ่ในมือมี 3 ใบและเป็นไพ่ในกลุ่ 
-                , K ถ้าชนะจะได้เงิน 3 เท่า
-                else if (cardsOnHand.NumberCard.All(kw => str.Contains(11) && str.Contains(12) && str.Contains(13)))
+                // ผี - ไพ่ในมือมี 3 ใบและเป็นไพ่ในกลุ่ม J, Q, K 
+
+                else if (cardsOnHand.NumberCards.All(c => c == 11 || c == 12 || c == 13))
                 {
-                    card.RankCards = 7;
+                    return ScoreRankCards.Ghost;
                 }
                 // เรียง - ไพ่ในมือมี 3 ใบและเป็น เลขเรียงกัน ถ้าชนะจะได้เงิน 3 เท่า (Q, K, A ไม่ถือว่าเรียง)
                 else if (StraightNumberCards[0] - StraightNumberCards[1] == -1 && StraightNumberCards[1] - StraightNumberCards[2] == -1)
                 {
-                    card.RankCards = 5;
+                    return ScoreRankCards.Straight;
                 }
             }
-            return card.RankCards;
+            return ScoreRankCards.NormalCard;
         }
 
     }
@@ -139,3 +151,4 @@ namespace CodeBasic
 
 // TwoPair = 5, *2
 // NormalCard = 0
+
