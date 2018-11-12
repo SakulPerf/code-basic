@@ -24,9 +24,4 @@ namespace CodeBasic
     {
         public int Score { get; set; }
     }
-
-    public class SumCard{
-         public int TotalCards { get; set; }
-    }
-
 }

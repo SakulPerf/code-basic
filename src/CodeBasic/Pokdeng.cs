@@ -22,8 +22,6 @@ namespace CodeBasic
             var dealerSumScore = SumScore(dealerCardsonHand);
             var playerSumScore = SumScore(playerCardsonHand);
 
-
-
             CheckPlayerWin(betAmount, playerCardsonHand, dealerCardsonHand, dealerSumScore, playerSumScore);
         }
 
@@ -32,7 +30,6 @@ namespace CodeBasic
             var sumScore = new SumScore();
             return sumScore.Score = cardsOnHand.NumberCards.Where(numberCards => numberCards <= 9).Sum() % 10;
         }
-
 
         public static ScoreRankCards CheckCardsScore(CardsOnHand cardsOnHand)
         {
@@ -119,7 +116,7 @@ namespace CodeBasic
             var TotalCardsOnplayer = playerCardsonHand.NumberCards.Count(it => it != 0);
             var TotalCardsOndealer = dealerCardsonHand.NumberCards.Count(it => it != 0);
 
-            if (betAmount > 0)
+            if (betAmount > 0 && betAmount < PlayerBalance)
             {
                 if (dealerSumScore == playerSumScore)
                 {
@@ -134,7 +131,14 @@ namespace CodeBasic
                 }
                 else if (playerSumScore > dealerSumScore)
                 {
-                    PlayerBalance += betAmount * CheckRankCardsReward(playerCardsonHand);
+                    if (TotalCardsOnplayer > TotalCardsOndealer && dealerSumScore >= 8)
+                    {
+                        PlayerBalance -= betAmount;
+                    }
+                    else
+                    {
+                        PlayerBalance += betAmount * CheckRankCardsReward(playerCardsonHand);
+                    }
                 }
                 else
                 {
@@ -146,22 +150,11 @@ namespace CodeBasic
                     {
                         PlayerBalance -= betAmount * CheckRankCardsReward(dealerCardsonHand);
                     }
-
                 }
             }
-            else if (betAmount > PlayerBalance) return;
-
-            else return;
+           
         }
-
-        // public static int CheckTotalCardsonHands(CardsOnHand CardsonHand)
-        // {
-        //     var totalcard = new SumCard();
-        //     return totalcard.TotalCards = CardsonHand.NumberCards.Count(it => it != 0);
-        // }
     }
-
-
 }
 
 

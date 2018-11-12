@@ -175,8 +175,7 @@ namespace CodeBasic.Tests
         }
 
         [Theory(DisplayName = "แต้มผู้เล่นชนะเจ้ามือ แบบสามเด้ง ผู้เล่นได้รับเงินเพิ่ม 3 เท่าของเงินที่ลงพนัน")]
-        [InlineData(100, 2, 2, 1, Club, Club, Club, 1, 1, 1, Diamon, Diamon, Diamon, 1000, 1000)]
-        [InlineData(100, 2, 2, 1, Club, Club, Club, 3, 3, 3, Diamon, Diamon, Diamon, 1000, 1000)]
+        [InlineData(100, 6, 2, 1, Club, Club, Club, 3, 3, 3, Diamon, Diamon, Diamon, 1000, 1000)]
         public void PlayerDrawTripleThenDoNothing(int bet, int p1cn1, int p1cn2, int p1cn3, string p1cs1, string p1cs2, string p1cs3, int p2cn1, int p2cn2, int p2cn3, string p2cs1, string p2cs2, string p2cs3, int balance, int expectedBalance)
         {
             var sut = new Pokdeng { PlayerBalance = balance };
@@ -202,7 +201,8 @@ namespace CodeBasic.Tests
         [InlineData(100, 1, 8, 0, Club, Diamon, "", 1, 1, 2, Club, Diamon, Diamon, 1000, 900)]
         [InlineData(100, 1, 8, 0, Club, Diamon, "", 1, 7, 1, Club, Diamon, Diamon, 1000, 900)]
         [InlineData(100, 1, 7, 0, Club, Diamon, "", 1, 1, 2, Club, Diamon, Diamon, 1000, 900)]
-        [InlineData(100, 1, 7, 0, Club, Diamon, "", 1, 7, 1, Club, Diamon, Diamon, 1000, 900)]
+        [InlineData(100, 1, 7, 0, Club, Diamon, "", 1, 7, 1, Club, Diamon, Diamon, 1000, 900)] 
+       
         public void PlayerlostPokWhenFaceTo3CardsThenLostX1FromBet(int bet, int p1cn1, int p1cn2, int p1cn3, string p1cs1, string p1cs2, string p1cs3, int p2cn1, int p2cn2, int p2cn3, string p2cs1, string p2cs2, string p2cs3, int balance, int expectedBalance)
         {
             var sut = new Pokdeng { PlayerBalance = balance };
